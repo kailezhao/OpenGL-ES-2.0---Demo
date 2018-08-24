@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		002CFF2C2108315B00B6274D /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 002CFF2B2108315B00B6274D /* RootViewController.m */; };
+		002CFF2F2108341000B6274D /* Draw2DImageVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 002CFF2E2108341000B6274D /* Draw2DImageVC.m */; };
 		3308E2231F0A1CA10076CF60 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3308E2221F0A1CA10076CF60 /* main.m */; };
 		3308E2261F0A1CA10076CF60 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3308E2251F0A1CA10076CF60 /* AppDelegate.m */; };
 		3308E2291F0A1CA10076CF60 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3308E2281F0A1CA10076CF60 /* ViewController.m */; };
@@ -21,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		002CFF2A2108315B00B6274D /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		002CFF2B2108315B00B6274D /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		002CFF2D2108341000B6274D /* Draw2DImageVC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Draw2DImageVC.h; sourceTree = "<group>"; };
+		002CFF2E2108341000B6274D /* Draw2DImageVC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Draw2DImageVC.m; sourceTree = "<group>"; };
 		3308E21E1F0A1CA10076CF60 /* OpenGL--Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenGL--Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3308E2221F0A1CA10076CF60 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3308E2241F0A1CA10076CF60 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -76,8 +82,12 @@
 				3308E2411F0A39090076CF60 /* meinv0.jpg */,
 				3308E2241F0A1CA10076CF60 /* AppDelegate.h */,
 				3308E2251F0A1CA10076CF60 /* AppDelegate.m */,
+				002CFF2A2108315B00B6274D /* RootViewController.h */,
+				002CFF2B2108315B00B6274D /* RootViewController.m */,
 				3308E2271F0A1CA10076CF60 /* ViewController.h */,
 				3308E2281F0A1CA10076CF60 /* ViewController.m */,
+				002CFF2D2108341000B6274D /* Draw2DImageVC.h */,
+				002CFF2E2108341000B6274D /* Draw2DImageVC.m */,
 				3308E22A1F0A1CA10076CF60 /* Main.storyboard */,
 				3308E22D1F0A1CA20076CF60 /* Assets.xcassets */,
 				3308E22F1F0A1CA20076CF60 /* LaunchScreen.storyboard */,
@@ -135,7 +145,7 @@
 				TargetAttributes = {
 					3308E21D1F0A1CA10076CF60 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 6AJ2E3Z5EP;
+						DevelopmentTeam = 9C4NB6B62P;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -181,7 +191,9 @@
 			files = (
 				3308E2291F0A1CA10076CF60 /* ViewController.m in Sources */,
 				3308E2261F0A1CA10076CF60 /* AppDelegate.m in Sources */,
+				002CFF2C2108315B00B6274D /* RootViewController.m in Sources */,
 				3308E2231F0A1CA10076CF60 /* main.m in Sources */,
+				002CFF2F2108341000B6274D /* Draw2DImageVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -299,7 +311,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6AJ2E3Z5EP;
+				DEVELOPMENT_TEAM = 9C4NB6B62P;
 				INFOPLIST_FILE = "OpenGL--Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -312,7 +324,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 6AJ2E3Z5EP;
+				DEVELOPMENT_TEAM = 9C4NB6B62P;
 				INFOPLIST_FILE = "OpenGL--Demo/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -340,6 +352,7 @@
 				3308E2371F0A1CA20076CF60 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

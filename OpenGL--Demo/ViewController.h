@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <GLKit/GLKit.h>
 
+/**
+ 绘制2d图形
+ */
 @interface ViewController : GLKViewController
 
 

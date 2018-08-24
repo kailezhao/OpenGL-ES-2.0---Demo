@@ -32,7 +32,7 @@ static const SceneVertexImg verticesImg[] =
 //    {{-0.5, -0.5, 0.0}, {0.0, 0.0}},  // 左下
 //    {{ 0.5, -0.5, 0.0}, {1.0, 0.0}},  // 右下
 //    {{-0.5,  0.5, 0.0}, {0.0, 1.0}},  // 左上
-//    
+//
 //    // 解决图片只有一半显示的问题 begin
 //    {{ 0.5, -0.5, 0.0}, {1.0, 0.0}},//右下
 //    {{-0.5,  0.5, 0.0}, {0.0, 1.0}},//左上
@@ -62,9 +62,20 @@ static const SceneVertexImg verticesImg[] =
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+/* open gl 绘图的基本的步骤
+ 生成: glGenBuffers() 生成一个标识
+ 绑定缓存数据: glBindBuffer() //将生成的标识绑定到GL_ARRAY_BUFFER中
+ 缓存数据:glBufferData() //复制顶点数据从CPU到GPU
+ 启用:glEnableVertexAttribArray() //开启对应的顶点缓存属性
+ 设置指针:glVertexAttribPointer()//设置指针从顶点数组中读取数据
+ 绘图:glDrawArrays()//绘制图形
+ 删除:glDeleteBuffers()
 
-//    [self demo1];
-    [self demo2];
+ */
+    
+    
+    [self demo1];
+//    [self demo2];
 }
 //opengl 画三角形
 -(void)demo1{
@@ -103,82 +114,7 @@ static const SceneVertexImg verticesImg[] =
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
     
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
-}
-//渲染一张纹理图片
--(void)demo2{
-    GLKView *view = (GLKView*)self.view;
-    NSAssert([view isKindOfClass:[GLKView class]], @"ViewController's view is not a GLKView");
     
-    //创建一个opengl es 2.0 context（上下文）并将其提供给view
-    view.context = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
-    //将刚刚创建的context设置为当前context
-    [EAGLContext setCurrentContext:view.context];
-    // 创建一个提供标准OpenGL ES 2.0的GLKBaseEffect
-    self.baseEffect = [[GLKBaseEffect alloc]init];
-    // 启用Shading Language programs（着色语言程序）
-    self.baseEffect.useConstantColor = GL_TRUE;
-    // 设置渲染使用的颜色
-    self.baseEffect.constantColor = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
-    // 设置当前context的背景色为白色
-    glClearColor(0.0, 0.0, 0.0, 1.0);
-    // 生成缓存，并保存在vertexBufferId中
-    glGenBuffers(1, &vertexBufferId);
-    // 绑定缓存
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
-    // 缓存数据
-    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesImg), verticesImg, GL_DYNAMIC_DRAW);
-    
-    //读入需要绘制的图片的 CGImageRef 内容
-    CGImageRef imageRefTulip = [UIImage imageNamed:@"meinv2.jpg"].CGImage;
-    //使用GLKTextureLoader（纹理读取）从上边得到的imageRefTulip读取纹理信息
-    // 解决纹理倒置问题 begin
-    //GLKTextureLoaderOriginBottomLeft此方法可以转换一下坐标系(默认是左下角为原点)
-    GLKTextureInfo *textureInfoTulip = [GLKTextureLoader textureWithCGImage:imageRefTulip
-                                                                    options:@{GLKTextureLoaderOriginBottomLeft: @(YES)}
-                                                                      error:nil];
-    // 解决纹理倒置问题 end
-    //将读取到的纹理信息缓存到baseEffec的texture2d0中
-    self.baseEffect.texture2d0.name = textureInfoTulip.name;
-    self.baseEffect.texture2d0.target = textureInfoTulip.target;
-}
-#pragma mark - GLKViewDelegate
--(void)glkView:(GLKView*)view drawInRect:(CGRect)rect{
-    [self draw1];//绘制三角形
-    [self draw2];//绘制图片
-}
-//绘制纹理图片
--(void)draw2{
-    [self.baseEffect prepareToDraw];
-    glClear(GL_COLOR_BUFFER_BIT);
-    glEnableVertexAttribArray(GLKVertexAttribPosition);
-    
-    glVertexAttribPointer(GLKVertexAttribPosition,
-                          3,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(SceneVertexImg),
-                          NULL + offsetof(SceneVertexImg, positionCoordsImg));
-    //绘制纹理数据准备
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);//启用纹理
-    glVertexAttribPointer(GLKVertexAttribTexCoord0,
-                          2,
-                          GL_FLOAT,
-                          GL_FALSE,
-                          sizeof(SceneVertexImg),
-                          NULL+offsetof(SceneVertexImg,textureCoordsImg));
-    
-    // 执行绘画操作
-    glDrawArrays(GL_TRIANGLES,
-                 0,
-                 sizeof(verticesImg) / sizeof(SceneVertexImg));
-}
-//绘制三角形
--(void)draw1{
-    //告诉baseEffect准备好当前的opengl es 的context ， 马上就要给绘画了
-    [self.baseEffect prepareToDraw];
-    
-    //清除当前绑定绑定的帧缓存的像素颜色渲染缓存中的每一个像素的颜色为当前使用glclearcolor 函数设置的值
-    glClear(GL_COLOR_BUFFER_BIT);
     
     /*
      * glEnableVertexAttribArray(GLuint index)
@@ -206,11 +142,95 @@ static const SceneVertexImg verticesImg[] =
                           sizeof(SceneVertex),//每个顶点之间的内存间隔为sizeof(SceneVertex)
                           NULL);//偏移量为0，从开始绘制，也可以传0
     
+}
+//渲染一张纹理图片
+-(void)demo2{
+    GLKView *view = (GLKView*)self.view;
+    NSAssert([view isKindOfClass:[GLKView class]], @"ViewController's view is not a GLKView");
+    
+    //创建一个opengl es 2.0 context（上下文）并将其提供给view
+    view.context = [[EAGLContext alloc]initWithAPI:kEAGLRenderingAPIOpenGLES2];
+    //将刚刚创建的context设置为当前context
+    [EAGLContext setCurrentContext:view.context];
+    // 创建一个提供标准OpenGL ES 2.0的GLKBaseEffect
+    self.baseEffect = [[GLKBaseEffect alloc]init];
+    // 启用Shading Language programs（着色语言程序）
+    self.baseEffect.useConstantColor = GL_TRUE;
+    // 设置渲染使用的颜色
+    self.baseEffect.constantColor = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
+    // 设置当前context的背景色为白色
+    glClearColor(0.0, 0.0, 0.0, 1.0);
+    //1. 生成缓存，并保存在vertexBufferId中
+    glGenBuffers(1, &vertexBufferId);
+    //2. 绑定缓存
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+    //3. 缓存数据
+    glBufferData(GL_ARRAY_BUFFER, sizeof(verticesImg), verticesImg, GL_DYNAMIC_DRAW);
+    
+    
+    
+    //读入需要绘制的图片的 CGImageRef 内容
+    CGImageRef imageRefTulip = [UIImage imageNamed:@"tulip.png"].CGImage;
+    //使用GLKTextureLoader（纹理读取）从上边得到的imageRefTulip读取纹理信息
+    // 解决纹理倒置问题 begin
+    //GLKTextureLoaderOriginBottomLeft此方法可以转换一下坐标系(默认是左下角为原点)
+    GLKTextureInfo *textureInfoTulip = [GLKTextureLoader textureWithCGImage:imageRefTulip
+                                                                    options:@{GLKTextureLoaderOriginBottomLeft: @(YES)}
+                                                                      error:nil];
+    // 解决纹理倒置问题 end
+    //将读取到的纹理信息缓存到baseEffec的texture2d0中
+    self.baseEffect.texture2d0.name = textureInfoTulip.name;
+    self.baseEffect.texture2d0.target = textureInfoTulip.target;
+    
+    
+    glEnableVertexAttribArray(GLKVertexAttribPosition); //顶点数据缓存
+    glVertexAttribPointer(GLKVertexAttribPosition, 3, GL_FLOAT, GL_FALSE, sizeof(SceneVertexImg), NULL + offsetof(SceneVertexImg, positionCoordsImg));
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0); //纹理
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, sizeof(SceneVertexImg), NULL + offsetof(SceneVertexImg,textureCoordsImg));
+    
+    
+   
+    
+}
+#pragma mark - GLKViewDelegate
+-(void)glkView:(GLKView*)view drawInRect:(CGRect)rect{
+    [self draw1];//绘制三角形
+
+//    [self draw2];//绘制图片
+}
+//绘制纹理图片
+-(void)draw2{
+
+        [self.baseEffect prepareToDraw];
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // 执行绘画操作
+        glDrawArrays(GL_TRIANGLES,
+                     0,
+                     sizeof(verticesImg) / sizeof(SceneVertexImg));
+}
+//绘制三角形
+-(void)draw1{
+    //告诉baseEffect准备好当前的opengl es 的context ， 马上就要给绘画了
+    [self.baseEffect prepareToDraw];
+    
+    //清除当前绑定绑定的帧缓存的像素颜色渲染缓存中的每一个像素的颜色为当前使用glclearcolor 函数设置的值
+    glClear(GL_COLOR_BUFFER_BIT);
+    
     glDrawArrays(GL_TRIANGLES,//绘制三角形
                  0,//从开始绘制
                  3);//共3个顶点
 }
-
+-(void)dealloc{
+    GLKView *view = (GLKView *)self.view;
+    [EAGLContext setCurrentContext:view.context];
+    if ( 0 != vertexBufferId) {
+        glDeleteBuffers(1,
+                        &vertexBufferId);
+        vertexBufferId = 0;
+    }
+    NSLog(@"%@销毁了!!",self.view);
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
